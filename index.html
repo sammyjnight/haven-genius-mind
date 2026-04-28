@@ -293,54 +293,155 @@
     @keyframes ticker { to { transform: translateX(-50%); } }
 
     /* ================================================================
-       SECTION: Features — Full viewport, 3x2 grid
+       SECTION: Statement — Full viewport, huge left-aligned text, warm bg
        ================================================================ */
 
-    .features {
+    .statement {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      background: var(--white);
+      background: var(--warm);
+      position: relative;
       padding: var(--section-pad) var(--page-pad);
     }
-    .features__inner { max-width: 1200px; margin: 0 auto; width: 100%; }
-    .features__header { text-align: center; margin-bottom: 5rem; }
-    .features__eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
-    .features__title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
 
-    .features__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    /* Corner crosshairs */
+    .crosshairs { position: absolute; inset: 2rem; pointer-events: none; }
+    .crosshairs .ch {
+      position: absolute;
+      width: 16px; height: 16px;
+    }
+    .crosshairs .ch::before, .crosshairs .ch::after {
+      content: ''; position: absolute;
+      background: rgba(0,0,0,0.2);
+    }
+    .crosshairs .ch::before { width: 1px; height: 100%; left: 50%; top: 0; }
+    .crosshairs .ch::after { height: 1px; width: 100%; top: 50%; left: 0; }
+    .crosshairs .ch--tl { top: 0; left: 0; }
+    .crosshairs .ch--tr { top: 0; right: 0; }
+    .crosshairs .ch--bl { bottom: 0; left: 0; }
+    .crosshairs .ch--br { bottom: 0; right: 0; }
 
-    .f-card {
-      background: var(--off-white);
-      border-radius: var(--radius-xl);
-      padding: 2.5rem 2rem;
+    .statement__text {
+      font-size: clamp(1.75rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      max-width: 800px;
+      color: var(--text-dark);
+    }
+
+    .statement__text .hl::after { bottom: -3px; height: 4px; }
+
+    /* ================================================================
+       SECTION: Features — Massive heading + sticky scroll-through
+       ================================================================ */
+
+    .features-intro {
+      background: var(--warm);
+      padding: 8rem var(--page-pad) 4rem;
       text-align: center;
-      border: 1px solid transparent;
+    }
+
+    .features-intro__title {
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--text-dark);
+    }
+
+    /* Sticky scroll-through features */
+    .features-scroll {
+      background: var(--warm);
+      padding: 0 var(--page-pad);
+    }
+
+    .features-scroll__wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
       position: relative;
+    }
+
+    .features-scroll__labels {
+      padding: 10vh 0 40vh;
+    }
+
+    .fs-label {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 0;
+      opacity: 0.2;
+      transition: opacity 0.5s var(--ease);
+    }
+
+    .fs-label.is-active { opacity: 1; }
+
+    .fs-label__num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+
+    .fs-label__title {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .fs-label__desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 400px;
+    }
+
+    .features-scroll__sticky {
+      position: sticky;
+      top: 10vh;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fs-image-wrap {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-xl);
       overflow: hidden;
-      transition: all var(--duration-fast) var(--ease);
+      position: relative;
+      background: var(--navy);
     }
-    .f-card::after {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--teal), var(--teal-light));
-      transform: scaleX(0); transition: transform 0.5s var(--ease);
-    }
-    .f-card:hover::after { transform: scaleX(1); }
-    .f-card:hover { border-color: rgba(0,166,210,0.15); transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,166,210,0.1); }
 
-    .f-card__num {
-      width: 64px; height: 64px; border-radius: 18px;
-      background: var(--navy); color: var(--teal);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.5rem;
-      font-size: 18px; font-weight: 800;
-      transition: transform 0.5s var(--ease-spring), background 0.4s;
+    .fs-image {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text-on-dark-muted);
+      background: linear-gradient(145deg, var(--navy), var(--navy-mid));
+      opacity: 0;
+      transform: translateY(15%) scale(1.1);
+      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
     }
-    .f-card:hover .f-card__num { transform: scale(1.12) rotate(-3deg); background: var(--navy-light); }
 
-    .f-card__title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .f-card__desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
+    .fs-image.is-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
 
     /* ================================================================
        SECTION: Split — Image left, text right (full viewport)
@@ -817,6 +918,11 @@
       .features__grid, .ingredients__grid, .reviews__grid { grid-template-columns: 1fr; }
       .stats__grid { grid-template-columns: repeat(2, 1fr); }
       .stat + .stat { border-left: none; }
+      .features-scroll__wrap { grid-template-columns: 1fr; }
+      .features-scroll__sticky { position: relative; top: 0; height: auto; margin-bottom: 2rem; }
+      .fs-label { min-height: auto; opacity: 1; padding: 1.5rem 0; }
+      .fs-image-wrap { aspect-ratio: 3/4; }
+      .features-intro__title { font-size: clamp(3rem, 14vw, 6rem); }
       .split { grid-template-columns: 1fr; min-height: auto; }
       .split__media { min-height: 50vh; }
       .split__text { padding: 3rem var(--page-pad); }
@@ -883,20 +989,66 @@
     </div>
   </div>
 
-  <!-- FEATURES — Full viewport grid -->
-  <section class="features">
-    <div class="features__inner">
-      <div class="features__header" data-r>
-        <div class="features__eyebrow">The Stack</div>
-        <h2 class="features__title">Cognitive Infrastructure<br><em>Built Different</em></h2>
+  <!-- STATEMENT — Full viewport, massive left-aligned text, warm bg, crosshairs -->
+  <section class="statement">
+    <div class="crosshairs">
+      <div class="ch ch--tl"></div><div class="ch ch--tr"></div>
+      <div class="ch ch--bl"></div><div class="ch ch--br"></div>
+    </div>
+    <p class="statement__text" data-r>
+      Genius Mind is a <span class="hl">16-ingredient cognitive stack</span> built for founders, operators, and anyone carrying significant cognitive load. It supports sustained decision quality, eliminates the afternoon crash, and compounds over time.
+    </p>
+  </section>
+
+  <!-- FEATURES INTRO — Massive heading -->
+  <section class="features-intro">
+    <h2 class="features-intro__title" data-r>Genius Mind<br>Features</h2>
+  </section>
+
+  <!-- FEATURES — Sticky scroll-through (text left, images right) -->
+  <section class="features-scroll">
+    <div class="features-scroll__wrap">
+      <div class="features-scroll__labels" id="fs-labels">
+        <div class="fs-label is-active" data-fs="0">
+          <div class="fs-label__num">01</div>
+          <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
+          <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience in a single capsule.</p>
+        </div>
+        <div class="fs-label" data-fs="1">
+          <div class="fs-label__num">02</div>
+          <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
+          <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
+        </div>
+        <div class="fs-label" data-fs="2">
+          <div class="fs-label__num">03</div>
+          <h3 class="fs-label__title">Zero Crash Architecture</h3>
+          <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's own chemistry, supported — not overridden.</p>
+        </div>
+        <div class="fs-label" data-fs="3">
+          <div class="fs-label__num">04</div>
+          <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
+          <p class="fs-label__desc">We take on all the risk. If you've been consistent for 90 days and haven't noticed a difference, full refund. No questions.</p>
+        </div>
+        <div class="fs-label" data-fs="4">
+          <div class="fs-label__num">05</div>
+          <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
+          <p class="fs-label__desc">Take with breakfast or 30-60 minutes before your most demanding work block. That's the entire protocol. It compounds from there.</p>
+        </div>
+        <div class="fs-label" data-fs="5">
+          <div class="fs-label__num">06</div>
+          <h3 class="fs-label__title">UK GMP Certified Facility</h3>
+          <p class="fs-label__desc">Manufactured in a GMP-certified facility in the UK. 100% vegan capsules. Gluten-free. Non-GMO. Every batch lab tested.</p>
+        </div>
       </div>
-      <div class="features__grid">
-        <div class="f-card" data-r data-d="1"><div class="f-card__num">16</div><h3 class="f-card__title">16 Ingredients</h3><p class="f-card__desc">Clinically studied compounds in synergy, not a single headline ingredient</p></div>
-        <div class="f-card" data-r data-d="2"><div class="f-card__num">50:1</div><h3 class="f-card__title">High-Ratio Extracts</h3><p class="f-card__desc">Ginkgo 50:1, Ginseng 20:1, Bacopa 11:1 — maximum potency</p></div>
-        <div class="f-card" data-r data-d="3"><div class="f-card__num">0</div><h3 class="f-card__title">Zero Crash</h3><p class="f-card__desc">Dopamine regulation, not stimulant dumping. No dependency</p></div>
-        <div class="f-card" data-r data-d="4"><div class="f-card__num">90</div><h3 class="f-card__title">90-Day Guarantee</h3><p class="f-card__desc">Full money-back. We take on all the risk so you don't have to</p></div>
-        <div class="f-card" data-r data-d="5"><div class="f-card__num">2</div><h3 class="f-card__title">2 Capsules Daily</h3><p class="f-card__desc">Take with breakfast or before your most demanding work block</p></div>
-        <div class="f-card" data-r data-d="6"><div class="f-card__num">UK</div><h3 class="f-card__title">UK GMP Facility</h3><p class="f-card__desc">Vegan, gluten-free, non-GMO. Manufactured in certified UK facility</p></div>
+      <div class="features-scroll__sticky">
+        <div class="fs-image-wrap">
+          <div class="fs-image is-active" data-fsi="0">[ 16 Ingredients Visual ]</div>
+          <div class="fs-image" data-fsi="1">[ Botanical Extracts ]</div>
+          <div class="fs-image" data-fsi="2">[ No Crash Diagram ]</div>
+          <div class="fs-image" data-fsi="3">[ 90-Day Badge ]</div>
+          <div class="fs-image" data-fsi="4">[ Capsule / Protocol ]</div>
+          <div class="fs-image" data-fsi="5">[ UK Facility ]</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1164,6 +1316,26 @@
     /* Parallax on split images */
     var pEls=document.querySelectorAll('[data-parallax]');
     if(pEls.length){window.addEventListener('scroll',function(){pEls.forEach(function(el){var r=el.parentElement.getBoundingClientRect(),v=window.innerHeight;if(r.bottom>0&&r.top<v){var p=(r.top/(v+r.height));el.style.transform='scale(1.08) translateY('+(p*40)+'px)'}})},{passive:true})}
+
+    /* Features sticky scroll-through */
+    var fsLabels=document.querySelectorAll('.fs-label');
+    var fsImages=document.querySelectorAll('.fs-image');
+    if(fsLabels.length){
+      var lastActive=-1;
+      window.addEventListener('scroll',function(){
+        var mid=window.innerHeight*0.45;
+        var active=0;
+        fsLabels.forEach(function(el,i){
+          var r=el.getBoundingClientRect();
+          if(r.top<mid) active=i;
+        });
+        if(active!==lastActive){
+          lastActive=active;
+          fsLabels.forEach(function(el,i){el.classList.toggle('is-active',i===active)});
+          fsImages.forEach(function(el,i){el.classList.toggle('is-active',i===active)});
+        }
+      },{passive:true});
+    }
 
     /* FAQ */
     document.querySelectorAll('.faq__q').forEach(function(b){b.addEventListener('click',function(){var i=b.parentElement,a=i.querySelector('.faq__a'),o=i.classList.contains('open');document.querySelectorAll('.faq__item').forEach(function(x){x.classList.remove('open');x.querySelector('.faq__a').style.maxHeight=null});if(!o){i.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});

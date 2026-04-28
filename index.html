@@ -325,13 +325,27 @@
     .statement__text {
       font-size: clamp(1.75rem, 4.5vw, 3.2rem);
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.25;
       letter-spacing: -0.02em;
       max-width: 800px;
-      color: var(--text-dark);
     }
 
-    .statement__text .hl::after { bottom: -3px; height: 4px; }
+    /* Each word starts muted, reveals to dark on scroll */
+    .statement__text .sw {
+      color: rgba(10, 10, 15, 0.12);
+      transition: color 0.35s var(--ease);
+      display: inline;
+    }
+    .statement__text .sw.lit {
+      color: var(--text-dark);
+    }
+    /* Highlight words go teal when lit */
+    .statement__text .sw.sw--hl {
+      transition: color 0.35s var(--ease);
+    }
+    .statement__text .sw.sw--hl.lit {
+      color: var(--teal);
+    }
 
     /* ================================================================
        SECTION: Features — Massive heading + sticky scroll-through
@@ -351,73 +365,34 @@
       color: var(--text-dark);
     }
 
-    /* Sticky scroll-through features */
+    /* Sticky scroll-through features — image dominates viewport */
     .features-scroll {
       background: var(--warm);
-      padding: 0 var(--page-pad);
-    }
-
-    .features-scroll__wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
       position: relative;
     }
 
-    .features-scroll__labels {
-      padding: 10vh 0 40vh;
+    .features-scroll__wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
     }
 
-    .fs-label {
-      min-height: 60vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2rem 0;
-      opacity: 0.2;
-      transition: opacity 0.5s var(--ease);
-    }
-
-    .fs-label.is-active { opacity: 1; }
-
-    .fs-label__num {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 0.75rem;
-    }
-
-    .fs-label__title {
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
-
-    .fs-label__desc {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      max-width: 400px;
-    }
-
+    /* Giant sticky image — takes up almost all the viewport */
     .features-scroll__sticky {
       position: sticky;
-      top: 10vh;
-      height: 80vh;
+      top: 0;
+      height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 2rem;
+      z-index: 0;
     }
 
     .fs-image-wrap {
       width: 100%;
-      aspect-ratio: 4/5;
+      height: 85vh;
       border-radius: var(--radius-xl);
       overflow: hidden;
       position: relative;
@@ -434,13 +409,66 @@
       color: var(--text-on-dark-muted);
       background: linear-gradient(145deg, var(--navy), var(--navy-mid));
       opacity: 0;
-      transform: translateY(15%) scale(1.1);
+      transform: translateY(12%) scale(1.08);
       transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
     }
 
     .fs-image.is-active {
       opacity: 1;
       transform: translateY(0) scale(1);
+    }
+
+    /* Text labels float over the bottom of the sticky image */
+    .features-scroll__labels {
+      position: relative;
+      z-index: 1;
+      padding: 50vh 0 0;
+    }
+
+    .fs-label {
+      min-height: 80vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 var(--page-pad) 10vh;
+    }
+
+    .fs-label__inner {
+      background: rgba(245, 240, 235, 0.92);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      max-width: 420px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+
+    .fs-label.is-active .fs-label__inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fs-label__num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+
+    .fs-label__title {
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .fs-label__desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
     }
 
     /* ================================================================
@@ -918,10 +946,10 @@
       .features__grid, .ingredients__grid, .reviews__grid { grid-template-columns: 1fr; }
       .stats__grid { grid-template-columns: repeat(2, 1fr); }
       .stat + .stat { border-left: none; }
-      .features-scroll__wrap { grid-template-columns: 1fr; }
-      .features-scroll__sticky { position: relative; top: 0; height: auto; margin-bottom: 2rem; }
-      .fs-label { min-height: auto; opacity: 1; padding: 1.5rem 0; }
-      .fs-image-wrap { aspect-ratio: 3/4; }
+      .features-scroll__sticky { height: 60vh; }
+      .fs-image-wrap { height: 55vh; }
+      .fs-label { min-height: 70vh; padding: 0 1rem 8vh; }
+      .fs-label__inner { max-width: 100%; }
       .features-intro__title { font-size: clamp(3rem, 14vw, 6rem); }
       .split { grid-template-columns: 1fr; min-height: auto; }
       .split__media { min-height: 50vh; }
@@ -995,9 +1023,7 @@
       <div class="ch ch--tl"></div><div class="ch ch--tr"></div>
       <div class="ch ch--bl"></div><div class="ch ch--br"></div>
     </div>
-    <p class="statement__text" data-r>
-      Genius Mind is a <span class="hl">16-ingredient cognitive stack</span> built for founders, operators, and anyone carrying significant cognitive load. It supports sustained decision quality, eliminates the afternoon crash, and compounds over time.
-    </p>
+    <p class="statement__text" id="statement-text">Genius Mind is a <em>16-ingredient cognitive stack</em> built for founders, operators, and anyone carrying significant cognitive load. It supports sustained decision quality, eliminates the afternoon crash, and compounds over time.</p>
   </section>
 
   <!-- FEATURES INTRO — Massive heading -->
@@ -1010,34 +1036,46 @@
     <div class="features-scroll__wrap">
       <div class="features-scroll__labels" id="fs-labels">
         <div class="fs-label is-active" data-fs="0">
-          <div class="fs-label__num">01</div>
-          <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
-          <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience in a single capsule.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">01</div>
+            <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
+            <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience.</p>
+          </div>
         </div>
         <div class="fs-label" data-fs="1">
-          <div class="fs-label__num">02</div>
-          <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
-          <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">02</div>
+            <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
+            <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
+          </div>
         </div>
         <div class="fs-label" data-fs="2">
-          <div class="fs-label__num">03</div>
-          <h3 class="fs-label__title">Zero Crash Architecture</h3>
-          <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's own chemistry, supported — not overridden.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">03</div>
+            <h3 class="fs-label__title">Zero Crash Architecture</h3>
+            <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's chemistry, supported.</p>
+          </div>
         </div>
         <div class="fs-label" data-fs="3">
-          <div class="fs-label__num">04</div>
-          <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
-          <p class="fs-label__desc">We take on all the risk. If you've been consistent for 90 days and haven't noticed a difference, full refund. No questions.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">04</div>
+            <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
+            <p class="fs-label__desc">We take on all the risk. 90 days consistent, no difference? Full refund. No questions.</p>
+          </div>
         </div>
         <div class="fs-label" data-fs="4">
-          <div class="fs-label__num">05</div>
-          <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
-          <p class="fs-label__desc">Take with breakfast or 30-60 minutes before your most demanding work block. That's the entire protocol. It compounds from there.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">05</div>
+            <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
+            <p class="fs-label__desc">Take with breakfast or before your most demanding work block. That's the entire protocol.</p>
+          </div>
         </div>
         <div class="fs-label" data-fs="5">
-          <div class="fs-label__num">06</div>
-          <h3 class="fs-label__title">UK GMP Certified Facility</h3>
-          <p class="fs-label__desc">Manufactured in a GMP-certified facility in the UK. 100% vegan capsules. Gluten-free. Non-GMO. Every batch lab tested.</p>
+          <div class="fs-label__inner">
+            <div class="fs-label__num">06</div>
+            <h3 class="fs-label__title">UK GMP Certified Facility</h3>
+            <p class="fs-label__desc">Manufactured in a GMP-certified UK facility. Vegan. Gluten-free. Non-GMO. Every batch lab tested.</p>
+          </div>
         </div>
       </div>
       <div class="features-scroll__sticky">
@@ -1345,6 +1383,41 @@
 
     /* Hero highlight delay */
     setTimeout(function(){document.querySelectorAll('.hero .hl').forEach(function(el){el.classList.add('v')})},1400);
+
+    /* Statement text — split into words, color reveal on scroll */
+    var stEl=document.getElementById('statement-text');
+    if(stEl){
+      var html=stEl.innerHTML;
+      /* Extract <em> tags and mark them */
+      var words=[];
+      var parts=html.split(/(<em>.*?<\/em>)/g);
+      parts.forEach(function(part){
+        if(part.startsWith('<em>')){
+          var inner=part.replace(/<\/?em>/g,'');
+          inner.split(/\s+/).forEach(function(w){if(w)words.push({text:w,hl:true})});
+        } else {
+          part.split(/\s+/).forEach(function(w){if(w)words.push({text:w,hl:false})});
+        }
+      });
+      stEl.innerHTML=words.map(function(w){
+        return '<span class="sw'+(w.hl?' sw--hl':'')+'">'+w.text+'</span>';
+      }).join(' ');
+
+      var swEls=stEl.querySelectorAll('.sw');
+      var stSection=stEl.closest('.statement');
+      window.addEventListener('scroll',function(){
+        var rect=stSection.getBoundingClientRect();
+        var vh=window.innerHeight;
+        /* progress 0-1 as section scrolls through viewport */
+        var progress=(vh-rect.top)/(vh+rect.height*0.5);
+        progress=Math.max(0,Math.min(1,progress));
+        var totalWords=swEls.length;
+        var litCount=Math.floor(progress*totalWords*1.3);
+        swEls.forEach(function(el,i){
+          el.classList.toggle('lit',i<litCount);
+        });
+      },{passive:true});
+    }
   })();
   </script>
 </body>

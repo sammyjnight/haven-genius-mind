@@ -365,111 +365,70 @@
       color: var(--text-dark);
     }
 
-    /* Sticky scroll-through features — image dominates viewport */
+    /* Features — vertical stack of full-bleed images with title overlay
+       Exactly like Haven-1: each image fills the width, title overlaid,
+       image zooms into place on scroll */
     .features-scroll {
-      background: var(--warm);
-      position: relative;
-    }
-
-    /* Giant sticky image — takes up almost all the viewport */
-    .features-scroll__sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      z-index: 0;
-    }
-
-    .fs-image-wrap {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      height: 88vh;
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      position: relative;
       background: var(--navy);
     }
 
-    .fs-image {
-      position: absolute;
-      inset: 0;
+    .fs-item {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Image fills the entire block */
+    .fs-item__img-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .fs-item__img {
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.85rem;
       color: var(--text-on-dark-muted);
-      background: linear-gradient(145deg, var(--navy), var(--navy-mid));
-      opacity: 0;
-      transform: translateY(12%) scale(1.08);
-      transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+      background: linear-gradient(145deg, var(--navy-mid), var(--navy));
+      /* Start zoomed and shifted — animates to normal on scroll */
+      transform: translateY(15%) scale(1.1);
+      transition: transform 0.7s var(--ease-spring);
     }
 
-    .fs-image.is-active {
-      opacity: 1;
+    .fs-item.is-visible .fs-item__img {
       transform: translateY(0) scale(1);
     }
 
-    /* Labels scroll OVER the sticky image */
-    .features-scroll__labels {
-      position: relative;
+    /* Dark overlay */
+    .fs-item__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+    }
+
+    /* Feature title overlaid on the image — large, bottom-left */
+    .fs-item__title-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 3rem var(--page-pad);
       z-index: 1;
-      margin-top: -100vh;
-      padding-top: 60vh;
     }
 
-    .fs-label {
-      min-height: 80vh;
-      display: flex;
-      align-items: flex-end;
-      padding: 0 var(--page-pad) 12vh;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .fs-label__inner {
-      background: rgba(4, 30, 43, 0.85);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-lg);
-      padding: 2rem 2.5rem;
-      max-width: 400px;
-      color: var(--text-on-dark);
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
-    }
-
-    .fs-label.is-active .fs-label__inner {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fs-label__num {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 0.5rem;
-    }
-
-    .fs-label__title {
-      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+    .fs-item__title {
+      font-size: clamp(2rem, 5vw, 4.5rem);
       font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
       color: var(--white);
-    }
-
-    .fs-label__desc {
-      font-size: 0.85rem;
-      color: var(--text-on-dark-sub);
-      line-height: 1.55;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 700px;
     }
 
     /* ================================================================
@@ -947,10 +906,8 @@
       .features__grid, .ingredients__grid, .reviews__grid { grid-template-columns: 1fr; }
       .stats__grid { grid-template-columns: repeat(2, 1fr); }
       .stat + .stat { border-left: none; }
-      .features-scroll__sticky { height: 70vh; padding: 1rem; }
-      .fs-image-wrap { height: 65vh; }
-      .fs-label { min-height: 70vh; padding: 0 1.5rem 8vh; }
-      .fs-label__inner { max-width: 100%; }
+      .fs-item__title { font-size: clamp(1.5rem, 7vw, 2.5rem); }
+      .fs-item__title-wrap { padding: 2rem var(--page-pad); }
       .features-intro__title { font-size: clamp(3rem, 14vw, 6rem); }
       .split { grid-template-columns: 1fr; min-height: auto; }
       .split__media { min-height: 50vh; }
@@ -1032,61 +989,59 @@
     <h2 class="features-intro__title" data-r>Genius Mind<br>Features</h2>
   </section>
 
-  <!-- FEATURES — Sticky scroll-through: giant image stays, labels scroll over -->
+  <!-- FEATURES — Vertical stack of full-bleed images with overlaid titles (Haven-1 style) -->
   <section class="features-scroll">
-    <!-- Sticky image layer — stays fixed while labels scroll past -->
-    <div class="features-scroll__sticky">
-      <div class="fs-image-wrap">
-        <div class="fs-image is-active" data-fsi="0">[ 16 Ingredients Visual ]</div>
-        <div class="fs-image" data-fsi="1">[ Botanical Extracts ]</div>
-        <div class="fs-image" data-fsi="2">[ No Crash Diagram ]</div>
-        <div class="fs-image" data-fsi="3">[ 90-Day Badge ]</div>
-        <div class="fs-image" data-fsi="4">[ Capsule / Protocol ]</div>
-        <div class="fs-image" data-fsi="5">[ UK Facility ]</div>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ 16 Ingredients — Stack Visual ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">16 clinically studied ingredients</h3>
+        </div>
       </div>
     </div>
-    <!-- Labels scroll over the sticky image -->
-    <div class="features-scroll__labels" id="fs-labels">
-      <div class="fs-label is-active" data-fs="0">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">01</div>
-          <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
-          <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience.</p>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ High-Ratio Botanical Extracts ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">High-ratio botanical extracts</h3>
         </div>
       </div>
-      <div class="fs-label" data-fs="1">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">02</div>
-          <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
-          <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
+    </div>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ Zero Crash — Brain Chemistry ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">Zero crash architecture</h3>
         </div>
       </div>
-      <div class="fs-label" data-fs="2">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">03</div>
-          <h3 class="fs-label__title">Zero Crash Architecture</h3>
-          <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's chemistry, supported.</p>
+    </div>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ 90-Day Guarantee ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">90-day money-back guarantee</h3>
         </div>
       </div>
-      <div class="fs-label" data-fs="3">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">04</div>
-          <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
-          <p class="fs-label__desc">We take on all the risk. 90 days consistent, no difference? Full refund. No questions.</p>
+    </div>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ Two Capsules — Protocol ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">Two capsules, once a day</h3>
         </div>
       </div>
-      <div class="fs-label" data-fs="4">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">05</div>
-          <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
-          <p class="fs-label__desc">Take with breakfast or before your most demanding work block. That's the entire protocol.</p>
-        </div>
-      </div>
-      <div class="fs-label" data-fs="5">
-        <div class="fs-label__inner">
-          <div class="fs-label__num">06</div>
-          <h3 class="fs-label__title">UK GMP Certified Facility</h3>
-          <p class="fs-label__desc">Manufactured in a GMP-certified UK facility. Vegan. Gluten-free. Non-GMO. Every batch lab tested.</p>
+    </div>
+    <div class="fs-item" data-r="fade">
+      <div class="fs-item__img-wrap">
+        <div class="fs-item__img">[ UK GMP Facility ]</div>
+        <div class="fs-item__overlay"></div>
+        <div class="fs-item__title-wrap">
+          <h3 class="fs-item__title">UK GMP certified facility</h3>
         </div>
       </div>
     </div>
@@ -1356,24 +1311,15 @@
     var pEls=document.querySelectorAll('[data-parallax]');
     if(pEls.length){window.addEventListener('scroll',function(){pEls.forEach(function(el){var r=el.parentElement.getBoundingClientRect(),v=window.innerHeight;if(r.bottom>0&&r.top<v){var p=(r.top/(v+r.height));el.style.transform='scale(1.08) translateY('+(p*40)+'px)'}})},{passive:true})}
 
-    /* Features sticky scroll-through */
-    var fsLabels=document.querySelectorAll('.fs-label');
-    var fsImages=document.querySelectorAll('.fs-image');
-    if(fsLabels.length){
-      var lastActive=-1;
-      window.addEventListener('scroll',function(){
-        var mid=window.innerHeight*0.45;
-        var active=0;
-        fsLabels.forEach(function(el,i){
-          var r=el.getBoundingClientRect();
-          if(r.top<mid) active=i;
+    /* Features — image zoom on scroll (Haven-1 style) */
+    var fsItems=document.querySelectorAll('.fs-item');
+    if(fsItems.length){
+      var fsObs=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting) e.target.classList.add('is-visible');
         });
-        if(active!==lastActive){
-          lastActive=active;
-          fsLabels.forEach(function(el,i){el.classList.toggle('is-active',i===active)});
-          fsImages.forEach(function(el,i){el.classList.toggle('is-active',i===active)});
-        }
-      },{passive:true});
+      },{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
+      fsItems.forEach(function(el){fsObs.observe(el)});
     }
 
     /* FAQ */

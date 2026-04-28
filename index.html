@@ -371,12 +371,6 @@
       position: relative;
     }
 
-    .features-scroll__wrap {
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-    }
-
     /* Giant sticky image — takes up almost all the viewport */
     .features-scroll__sticky {
       position: sticky;
@@ -392,7 +386,9 @@
 
     .fs-image-wrap {
       width: 100%;
-      height: 85vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 88vh;
       border-radius: var(--radius-xl);
       overflow: hidden;
       position: relative;
@@ -418,28 +414,32 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Text labels float over the bottom of the sticky image */
+    /* Labels scroll OVER the sticky image */
     .features-scroll__labels {
       position: relative;
       z-index: 1;
-      padding: 50vh 0 0;
+      margin-top: -100vh;
+      padding-top: 60vh;
     }
 
     .fs-label {
       min-height: 80vh;
       display: flex;
       align-items: flex-end;
-      padding: 0 var(--page-pad) 10vh;
+      padding: 0 var(--page-pad) 12vh;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .fs-label__inner {
-      background: rgba(245, 240, 235, 0.92);
-      backdrop-filter: blur(16px);
+      background: rgba(4, 30, 43, 0.85);
+      backdrop-filter: blur(20px);
       border-radius: var(--radius-lg);
       padding: 2rem 2.5rem;
-      max-width: 420px;
+      max-width: 400px;
+      color: var(--text-on-dark);
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(24px);
       transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
     }
 
@@ -458,16 +458,17 @@
     }
 
     .fs-label__title {
-      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
+      color: var(--white);
     }
 
     .fs-label__desc {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
+      font-size: 0.85rem;
+      color: var(--text-on-dark-sub);
       line-height: 1.55;
     }
 
@@ -946,9 +947,9 @@
       .features__grid, .ingredients__grid, .reviews__grid { grid-template-columns: 1fr; }
       .stats__grid { grid-template-columns: repeat(2, 1fr); }
       .stat + .stat { border-left: none; }
-      .features-scroll__sticky { height: 60vh; }
-      .fs-image-wrap { height: 55vh; }
-      .fs-label { min-height: 70vh; padding: 0 1rem 8vh; }
+      .features-scroll__sticky { height: 70vh; padding: 1rem; }
+      .fs-image-wrap { height: 65vh; }
+      .fs-label { min-height: 70vh; padding: 0 1.5rem 8vh; }
       .fs-label__inner { max-width: 100%; }
       .features-intro__title { font-size: clamp(3rem, 14vw, 6rem); }
       .split { grid-template-columns: 1fr; min-height: auto; }
@@ -1031,61 +1032,61 @@
     <h2 class="features-intro__title" data-r>Genius Mind<br>Features</h2>
   </section>
 
-  <!-- FEATURES — Sticky scroll-through (text left, images right) -->
+  <!-- FEATURES — Sticky scroll-through: giant image stays, labels scroll over -->
   <section class="features-scroll">
-    <div class="features-scroll__wrap">
-      <div class="features-scroll__labels" id="fs-labels">
-        <div class="fs-label is-active" data-fs="0">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">01</div>
-            <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
-            <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience.</p>
-          </div>
-        </div>
-        <div class="fs-label" data-fs="1">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">02</div>
-            <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
-            <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
-          </div>
-        </div>
-        <div class="fs-label" data-fs="2">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">03</div>
-            <h3 class="fs-label__title">Zero Crash Architecture</h3>
-            <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's chemistry, supported.</p>
-          </div>
-        </div>
-        <div class="fs-label" data-fs="3">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">04</div>
-            <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
-            <p class="fs-label__desc">We take on all the risk. 90 days consistent, no difference? Full refund. No questions.</p>
-          </div>
-        </div>
-        <div class="fs-label" data-fs="4">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">05</div>
-            <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
-            <p class="fs-label__desc">Take with breakfast or before your most demanding work block. That's the entire protocol.</p>
-          </div>
-        </div>
-        <div class="fs-label" data-fs="5">
-          <div class="fs-label__inner">
-            <div class="fs-label__num">06</div>
-            <h3 class="fs-label__title">UK GMP Certified Facility</h3>
-            <p class="fs-label__desc">Manufactured in a GMP-certified UK facility. Vegan. Gluten-free. Non-GMO. Every batch lab tested.</p>
-          </div>
+    <!-- Sticky image layer — stays fixed while labels scroll past -->
+    <div class="features-scroll__sticky">
+      <div class="fs-image-wrap">
+        <div class="fs-image is-active" data-fsi="0">[ 16 Ingredients Visual ]</div>
+        <div class="fs-image" data-fsi="1">[ Botanical Extracts ]</div>
+        <div class="fs-image" data-fsi="2">[ No Crash Diagram ]</div>
+        <div class="fs-image" data-fsi="3">[ 90-Day Badge ]</div>
+        <div class="fs-image" data-fsi="4">[ Capsule / Protocol ]</div>
+        <div class="fs-image" data-fsi="5">[ UK Facility ]</div>
+      </div>
+    </div>
+    <!-- Labels scroll over the sticky image -->
+    <div class="features-scroll__labels" id="fs-labels">
+      <div class="fs-label is-active" data-fs="0">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">01</div>
+          <h3 class="fs-label__title">16 Clinically Studied Ingredients</h3>
+          <p class="fs-label__desc">Not one headline ingredient — 16 compounds working in synergy. Dopamine support, memory consolidation, cerebral blood flow, and stress resilience.</p>
         </div>
       </div>
-      <div class="features-scroll__sticky">
-        <div class="fs-image-wrap">
-          <div class="fs-image is-active" data-fsi="0">[ 16 Ingredients Visual ]</div>
-          <div class="fs-image" data-fsi="1">[ Botanical Extracts ]</div>
-          <div class="fs-image" data-fsi="2">[ No Crash Diagram ]</div>
-          <div class="fs-image" data-fsi="3">[ 90-Day Badge ]</div>
-          <div class="fs-image" data-fsi="4">[ Capsule / Protocol ]</div>
-          <div class="fs-image" data-fsi="5">[ UK Facility ]</div>
+      <div class="fs-label" data-fs="1">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">02</div>
+          <h3 class="fs-label__title">High-Ratio Botanical Extracts</h3>
+          <p class="fs-label__desc">Ginkgo Biloba 50:1, Panax Ginseng 20:1, Bacopa Monnieri 11:1. Concentrated to clinical potency, not filler doses.</p>
+        </div>
+      </div>
+      <div class="fs-label" data-fs="2">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">03</div>
+          <h3 class="fs-label__title">Zero Crash Architecture</h3>
+          <p class="fs-label__desc">Dopamine regulation, not stimulant dumping. No dependency, no tolerance build-up. Your brain's chemistry, supported.</p>
+        </div>
+      </div>
+      <div class="fs-label" data-fs="3">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">04</div>
+          <h3 class="fs-label__title">90-Day Money-Back Guarantee</h3>
+          <p class="fs-label__desc">We take on all the risk. 90 days consistent, no difference? Full refund. No questions.</p>
+        </div>
+      </div>
+      <div class="fs-label" data-fs="4">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">05</div>
+          <h3 class="fs-label__title">Two Capsules. Once A Day.</h3>
+          <p class="fs-label__desc">Take with breakfast or before your most demanding work block. That's the entire protocol.</p>
+        </div>
+      </div>
+      <div class="fs-label" data-fs="5">
+        <div class="fs-label__inner">
+          <div class="fs-label__num">06</div>
+          <h3 class="fs-label__title">UK GMP Certified Facility</h3>
+          <p class="fs-label__desc">Manufactured in a GMP-certified UK facility. Vegan. Gluten-free. Non-GMO. Every batch lab tested.</p>
         </div>
       </div>
     </div>

@@ -366,7 +366,7 @@
     }
 
     /* Features — vertical stack of full-bleed images with title overlay
-       Exactly like Haven-1: each image fills the width, title overlaid,
+       Haven-1 pattern: each image fills width, title overlaid,
        image zooms into place on scroll */
     .features-scroll {
       background: var(--navy);
@@ -376,50 +376,56 @@
       width: 100%;
       position: relative;
       overflow: hidden;
+      /* Each image block is big — roughly viewport height */
+      height: 80vh;
+      min-height: 500px;
     }
 
-    /* Image fills the entire block */
-    .fs-item__img-wrap {
-      width: 100%;
-      aspect-ratio: 16/9;
-      overflow: hidden;
-      position: relative;
-    }
-
+    /* Image — absolute fills the container, starts zoomed, animates to normal */
     .fs-item__img {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.85rem;
       color: var(--text-on-dark-muted);
-      background: linear-gradient(145deg, var(--navy-mid), var(--navy));
-      /* Start zoomed and shifted — animates to normal on scroll */
+      background-size: cover;
+      background-position: center;
+      background-color: var(--navy-mid);
+      /* Start zoomed in and shifted down */
       transform: translateY(15%) scale(1.1);
-      transition: transform 0.7s var(--ease-spring);
+      transition: transform 1.2s var(--ease-spring);
+      will-change: transform;
     }
 
+    /* When scrolled into view — zoom to normal */
     .fs-item.is-visible .fs-item__img {
-      transform: translateY(0) scale(1);
+      transform: translateY(0%) scale(1);
     }
 
-    /* Dark overlay */
+    /* Dark gradient overlay for text readability */
     .fs-item__overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.15);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.05) 0%,
+        rgba(0, 0, 0, 0.1) 50%,
+        rgba(0, 0, 0, 0.45) 100%
+      );
       pointer-events: none;
+      z-index: 1;
     }
 
-    /* Feature title overlaid on the image — large, bottom-left */
+    /* Feature title — large, overlaid at bottom-left */
     .fs-item__title-wrap {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 3rem var(--page-pad);
-      z-index: 1;
+      padding: 3.5rem var(--page-pad);
+      z-index: 2;
     }
 
     .fs-item__title {
@@ -429,6 +435,15 @@
       line-height: 1.05;
       letter-spacing: -0.03em;
       max-width: 700px;
+      /* Title fades up into place */
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s var(--ease) 0.2s, transform 0.6s var(--ease) 0.2s;
+    }
+
+    .fs-item.is-visible .fs-item__title {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ================================================================
@@ -989,61 +1004,37 @@
     <h2 class="features-intro__title" data-r>Genius Mind<br>Features</h2>
   </section>
 
-  <!-- FEATURES — Vertical stack of full-bleed images with overlaid titles (Haven-1 style) -->
+  <!-- FEATURES — Full-bleed image stack, titles overlaid, images zoom on scroll -->
   <section class="features-scroll">
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ 16 Ingredients — Stack Visual ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">16 clinically studied ingredients</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ 16 Ingredients — Stack Visual ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">16 clinically studied ingredients</h3></div>
     </div>
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ High-Ratio Botanical Extracts ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">High-ratio botanical extracts</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ High-Ratio Botanical Extracts ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">High-ratio botanical extracts</h3></div>
     </div>
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ Zero Crash — Brain Chemistry ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">Zero crash architecture</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ Zero Crash — Brain Chemistry ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">Zero crash architecture</h3></div>
     </div>
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ 90-Day Guarantee ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">90-day money-back guarantee</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ 90-Day Guarantee ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">90-day money-back guarantee</h3></div>
     </div>
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ Two Capsules — Protocol ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">Two capsules, once a day</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ Two Capsules — Protocol ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">Two capsules, once a day</h3></div>
     </div>
-    <div class="fs-item" data-r="fade">
-      <div class="fs-item__img-wrap">
-        <div class="fs-item__img">[ UK GMP Facility ]</div>
-        <div class="fs-item__overlay"></div>
-        <div class="fs-item__title-wrap">
-          <h3 class="fs-item__title">UK GMP certified facility</h3>
-        </div>
-      </div>
+    <div class="fs-item">
+      <div class="fs-item__img">[ UK GMP Facility ]</div>
+      <div class="fs-item__overlay"></div>
+      <div class="fs-item__title-wrap"><h3 class="fs-item__title">UK GMP certified facility</h3></div>
     </div>
   </section>
 
